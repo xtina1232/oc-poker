@@ -5,7 +5,7 @@ package poker.model.logic.showdown;
  * 
  * @author Becker
  */
-enum HandStrength {
+public enum HandStrength {
 
     /**
      * The hand has no strength, only the high card.
