@@ -8,11 +8,11 @@ import poker.model.GameState;
 import poker.model.logic.showdown.HandQuality;
 
 /**
- * This is a basic intelligent player.
+ * This is Dominik's approach to an intelligent player.
  * 
- * @author Becker
+ * @author Dominik Schšler
  */
-public class BasicPlayer extends AbstractPlayer {
+public class Dominik extends AbstractPlayer {
 
     @Override
     public Action getAction(int position, GameState gs, Card[] hand, int callSize) {    	
@@ -21,12 +21,10 @@ public class BasicPlayer extends AbstractPlayer {
     	int ownCoins = gs.getStack(position);
     	int minToRaise = gs.getMinimumRaise() + callSize;
 
-    	if(quality > 40 && ownCoins >= minToRaise) {
+    	if(quality > 50 && ownCoins >= minToRaise) {
     		action = new Action(PlayerAction.RAISE, minToRaise);
-    	} else if(quality > 40) {
-    		action = new Action(PlayerAction.CALL);
     	} else {
-    		action = new Action(PlayerAction.FOLD);
+    		action = new Action(PlayerAction.CALL);
     	}
     	
         return action;

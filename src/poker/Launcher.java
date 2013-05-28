@@ -2,8 +2,6 @@ package poker;
 
 import poker.gui.GameWindow;
 import poker.model.logic.Table;
-import java.net.URL;
-import java.net.URLClassLoader;
 
 
 /**
