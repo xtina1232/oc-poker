@@ -11,6 +11,11 @@ Zwei Typen:
 - Pittsburgh: Regelmengen werden "evolutioniert"
 - Michigan (Standard): einzelne Regeln werden "evolutioniert"
 
+Zwei Erweiterungen der Grundidee:
+
+- ZCS (0th level CS): führt Zuverlässigkeit ein (z)
+- XCS (accuracy-based CS): führt Payoff-Vorhersage ein (p)
+
 ## Funktionsweise
 
 Classifier: Bedingungs-Aktions-Paare, mit einer Vorhersage über den erwarteten Payoff der Aktion
