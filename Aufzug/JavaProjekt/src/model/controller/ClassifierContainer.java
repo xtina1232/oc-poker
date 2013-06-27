@@ -6,6 +6,14 @@ import java.util.Random;
 
 public class ClassifierContainer {
 
+	public static ClassifierContainer getInstance() {
+		if(ClassifierContainer.INSTANCE == null) {
+			ClassifierContainer.INSTANCE = new ClassifierContainer();
+		}
+		return ClassifierContainer.INSTANCE;
+	}
+	
+	
 	private static ClassifierContainer INSTANCE;
 	
 	private List<Classifier> classifier;
@@ -16,17 +24,9 @@ public class ClassifierContainer {
 		// TODO: init Actions and Fitness
 	}
 		
-	private List<Classifier> getMatchSet(List<Boolean> state) {
-		List<Classifier> results = new ArrayList<Classifier>();
-		for(Classifier c : classifier) {
-			if(c.match(state)) {
-				results.add(c);
-			}
-		}
-		return results;
-	}
 	
-	public List<Classifier> getActionSet(List<Boolean> state) {
+	
+	public List<Classifier> getActionSet(List<Integer> state) {
 		
 		List<Classifier> matchSet = getMatchSet(state);
 		
@@ -58,9 +58,9 @@ public class ClassifierContainer {
 			}
 		}
 		
-		IAction choosenAction = choosen.getAction();
+		int choosenAction = choosen.getAction();
 		for(Classifier c : matchSet) {
-			if(c.getAction().equals(choosenAction)) {
+			if(c.getAction() == choosenAction) {
 				actionSet.add(c);
 			}
 		}
@@ -68,11 +68,15 @@ public class ClassifierContainer {
 		return actionSet;
 	}
 	
-	public static ClassifierContainer getInstance() {
-		if(ClassifierContainer.INSTANCE == null) {
-			ClassifierContainer.INSTANCE = new ClassifierContainer();
+	private List<Classifier> getMatchSet(List<Integer> state) {
+		List<Classifier> results = new ArrayList<Classifier>();
+		for(Classifier c : classifier) {
+			if(c.match(state)) {
+				results.add(c);
+			}
 		}
-		return ClassifierContainer.INSTANCE;
+		return results;
 	}
+	
 	
 }

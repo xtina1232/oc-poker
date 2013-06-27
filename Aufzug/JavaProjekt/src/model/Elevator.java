@@ -153,6 +153,10 @@ public class Elevator {
 		this.direction = d;
 	}
 
+	public Directions getDirection() {
+		return direction;
+	}
+	
 	protected void step() {
 		for (Passenger p : this.passengers) {
 			p.step();
