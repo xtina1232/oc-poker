@@ -36,15 +36,7 @@ public class LCSController implements ControllerInterface {
 
 	public void step() {
 
-		// Get the state
-		List<Integer> state = new ArrayList<Integer>();
-		for (Floor f : floors) {
-			state.add(f.getWaitingPassengersCount() > 0 ? 1 : 0);
-		}
-		for (Elevator e : elevators) {
-			state.add(e.getCurrentFloor());
-			state.add(e.getDirection().ordinal());
-		}
+		List<Integer> state = getState();
 		
 		// Get the best fitting actions
 		List<Classifier> actionSet = classifierContainer.getActionSet(state);
@@ -91,7 +83,7 @@ public class LCSController implements ControllerInterface {
 		// Try to use: Statistic.getInstance().getAverageWaitingTime();
 
 
-		// Belegte fahrstühle in die gleiche richtung weiter, so lange noch
+		// Belegte fahrstï¿½hle in die gleiche richtung weiter, so lange noch
 		// passagiere in diese richtung wollen
 		// for (Elevator e : this.elevators) {
 		// if (!e.isFree()) {
@@ -102,7 +94,7 @@ public class LCSController implements ControllerInterface {
 		// }
 		// }
 
-		// wartende Passagiere werden vom nächsten Fahrstuhl bedient
+		// wartende Passagiere werden vom nï¿½chsten Fahrstuhl bedient
 		// for (Floor floor : this.floors) {
 		// if (floor.getWaitingPassengersCount() != 0) {
 		// Elevator e = closestFreeElevator(floor.getId());
@@ -114,6 +106,18 @@ public class LCSController implements ControllerInterface {
 		// }
 		// }
 		// }
+	}
+
+	private List<Integer> getState() {
+		List<Integer> state = new ArrayList<Integer>();
+		for (Floor f : floors) {
+			state.add(f.getWaitingPassengersCount() > 0 ? 1 : 0);
+		}
+		for (Elevator e : elevators) {
+			state.add(e.getCurrentFloor());
+			state.add(e.getDirection().ordinal());
+		}
+		return state;
 	}
 
 	private void performAction(int action) {
