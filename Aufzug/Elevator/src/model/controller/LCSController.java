@@ -64,7 +64,7 @@ public class LCSController implements ControllerInterface {
 			evaluateActionSet(lastActionSet, wholeFitness);
 			
 			int currentFitness = Math.round(wholeFitness * GAMMA);
-			for(int i=0; i<history.size(); i++) {
+			for(int i=1; i<history.size(); i++) {
 				if (currentFitness <= 1)
 					break;
 				evaluateActionSet(history.get(i), currentFitness);
@@ -72,8 +72,7 @@ public class LCSController implements ControllerInterface {
 			}
 		}
 		
-		// TODO: Assign Rewards to current and to previous ActionSet
-		// Try to use: Statistic.getInstance().getAverageWaitingTime();
+		
 
 
 		// Belegte fahrst���hle in die gleiche richtung weiter, so lange noch

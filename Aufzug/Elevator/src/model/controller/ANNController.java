@@ -2,7 +2,7 @@ package model.controller;
 
 import org.encog.ml.data.MLDataSet;
 import org.encog.ml.data.basic.BasicMLDataSet;
-import org.encog.neural.activation.ActivationSigmoid;
+//import org.encog.neural.activation.ActivationSigmoid;
 import org.encog.neural.networks.BasicNetwork;
 import org.encog.neural.networks.layers.BasicLayer;
 import org.encog.util.simple.EncogUtility;
@@ -28,8 +28,8 @@ public class ANNController implements ControllerInterface {
 	public static void main(String[] args) {
 		BasicNetwork method = new BasicNetwork();
 		method.addLayer(new BasicLayer(null, true, 2));
-		method.addLayer(new BasicLayer(new ActivationSigmoid(), true, 4));
-		method.addLayer(new BasicLayer(new ActivationSigmoid(), false, 1));
+		//method.addLayer(new BasicLayer(new ActivationSigmoid(), true, 4));
+		//method.addLayer(new BasicLayer(new ActivationSigmoid(), false, 1));
 		method.getStructure().finalizeStructure();
 		method.reset();
 

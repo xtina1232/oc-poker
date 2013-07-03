@@ -5,7 +5,10 @@ import java.util.List;
 import java.util.Random;
 
 public class ClassifierContainer {
-
+	
+	private static ClassifierContainer INSTANCE;
+	private List<Classifier> classifiers;
+	
 	public static ClassifierContainer getInstance() {
 		if(ClassifierContainer.INSTANCE == null) {
 			ClassifierContainer.INSTANCE = new ClassifierContainer();
@@ -13,15 +16,30 @@ public class ClassifierContainer {
 		return ClassifierContainer.INSTANCE;
 	}
 	
-	
-	private static ClassifierContainer INSTANCE;
-	
-	private List<Classifier> classifier;
-	
 	private ClassifierContainer() {
-		this.classifier = new ArrayList<Classifier>();
+		this.classifiers = new ArrayList<Classifier>();
+		Random rand = new Random();
 		
-		// TODO: init Actions and Fitness
+		for (int i=0; i<10; i++) {
+			List<Integer> classifier = new ArrayList<Integer>();
+			// Passagiere warten an etagen
+			for (int i2=0; i2<10; i++) {
+				classifier.add(rand.nextInt(2));
+			}
+			// Positionen der Aufzüge
+			for (int i2=0; i2<4; i++) {
+				classifier.add(rand.nextInt(10) + 1);
+			}
+			// Richtungen der Aufzüge
+			for (int i2=0; i2<4; i++) {
+				classifier.add(rand.nextInt(2));
+			}
+			// Passagiere im Aufzug
+			for (int i2=0; i2<4; i++) {
+				classifier.add(rand.nextInt(2));
+			}
+			this.classifiers.add(new Classifier(classifier, 20, rand.nextInt(46)));
+		}
 	}
 		
 	
@@ -70,7 +88,7 @@ public class ClassifierContainer {
 	
 	private List<Classifier> getMatchSet(List<Integer> state) {
 		List<Classifier> results = new ArrayList<Classifier>();
-		for(Classifier c : classifier) {
+		for(Classifier c : this.classifiers) {
 			if(c.match(state)) {
 				results.add(c);
 			}
