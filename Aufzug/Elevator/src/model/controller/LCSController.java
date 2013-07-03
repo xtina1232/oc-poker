@@ -4,12 +4,10 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.sun.javafx.scene.traversal.Direction;
 
 import model.Elevator;
 import model.Elevator.Directions;
 import model.Floor;
-import model.statistics.Statistic;
 
 /**
  * A LCS Controller
