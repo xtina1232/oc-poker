@@ -1,0 +1,13 @@
+# Aufzugsteuerung
+
+Classifier:
+
+- getDirection
+- getPassengerCount
+- getCurrentFloor
+- getLastFloor
+- isFree
+
+Action: Tupel (Richtung Fahrstuhl A, Richtung Fahrstuhl B, ..., Richtung Fahrstuhl E)
+
+Bewertung: 

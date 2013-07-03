@@ -22,7 +22,7 @@ public class SimpleController implements ControllerInterface {
 	}
 
 	public void step() {
-		// Belegte fahrstühle in die gleiche richtung weiter, so lange noch
+		// Belegte fahrstÃ¼hle in die gleiche richtung weiter, so lange noch
 		// passagiere in diese richtung wollen
 		for (Elevator e : this.elevators) {
 			if (!e.isFree()) {
@@ -32,7 +32,7 @@ public class SimpleController implements ControllerInterface {
 			}
 		}
 
-		// wartende Passagiere werden vom nächsten Fahrstuhl bedient
+		// wartende Passagiere werden vom nÃ¤chsten Fahrstuhl bedient
 		for (Floor floor : this.floors) {
 			if (floor.getWaitingPassengersCount() != 0) {
 				Elevator e = closestFreeElevator(floor.getId());
