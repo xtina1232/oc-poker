@@ -8,6 +8,6 @@ Classifier:
 - getLastFloor
 - isFree
 
-Action: Tupel (Richtung Fahrstuhl A, Richtung Fahrstuhl B, ..., Richtung Fahrstuhl E)
+Action: Tupel (Richtung Fahrstuhl A, Richtung Fahrstuhl B, ..., Richtung Fahrstuhl D)
 
-Bewertung: 
+Bewertung: Wartezeit 

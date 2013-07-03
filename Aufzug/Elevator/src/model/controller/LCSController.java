@@ -76,19 +76,19 @@ public class LCSController implements ControllerInterface {
 			}
 		}
 		
-		for (Floor floor : this.floors) {
-			if (floor.getWaitingPassengersCount() != 0) {
-				Elevator e = closestFreeElevator(floor.getId());
-				if (e != null) {
-					if (e.getCurrentFloor() - floor.getId() > 0)
-						e.setDirection(Directions.DOWN);
-					else
-						e.setDirection(Directions.UP);
-				}
-			}
-		}
-		
-		
+//		for (Floor floor : this.floors) {
+//			if (floor.getWaitingPassengersCount() != 0) {
+//				Elevator e = closestFreeElevator(floor.getId());
+//				if (e != null) {
+//					if (e.getCurrentFloor() - floor.getId() > 0)
+//						e.setDirection(Directions.DOWN);
+//					else
+//						e.setDirection(Directions.UP);
+//				}
+//			}
+//		}
+//		
+//		
 
 
 		// Belegte fahrst�hle in die gleiche richtung weiter, so lange noch

@@ -1,8 +1,11 @@
 package model.controller.nn;
 
 import org.encog.Encog;
+import org.encog.engine.network.activation.ActivationSigmoid;
 import org.encog.ml.data.MLDataSet;
 import org.encog.neural.networks.BasicNetwork;
+import org.encog.neural.networks.layers.BasicLayer;
+import org.encog.util.simple.EncogUtility;
 
 import model.controller.ControllerInterface;
 
@@ -43,7 +46,19 @@ public class NeuralNetwork implements ControllerInterface {
 	 * @param outputNeurons
 	 */
 	private void createFeedForwardNetwork(int inputNeurons, int hiddenNeurons, int outputNeurons) {
-		
+		this.network = new BasicNetwork();
+		network.addLayer(new BasicLayer(inputNeurons));
+		network.addLayer(new BasicLayer(hiddenNeurons));
+		network.addLayer(new BasicLayer(outputNeurons));
+		network.getStructure().finalizeStructure();
+		network.reset();
+	 
+//	    MLDataSet dataSet = new MLDataSet(XOR_INPUT, XOR_IDEAL);
+	    // train to 1%
+//	    EncogUtility.trainToError(method, dataSet, 0.01);
+	    // evaluate
+//	    EncogUtility.evaluate(method, dataSet);
+
 	}
 
 	private void createElmanNetwork(int inputNeurons, int hiddenNeurons, int outputNeurons) {

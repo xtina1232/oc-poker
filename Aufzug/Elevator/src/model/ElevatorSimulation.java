@@ -5,7 +5,8 @@ import java.util.Vector;
 
 import model.controller.ControllerInterface;
 import model.controller.LCSController;
-//import model.controller.SimpleController;
+import model.controller.SimpleController;
+import model.controller.nn.NeuralNetwork;
 import model.statistics.Statistic;
 
 /**
@@ -34,7 +35,8 @@ public class ElevatorSimulation {
 		}
 
 		//this.controller = new SimpleController(this.elevators, this.floors);
-		this.controller = new LCSController(this.elevators, this.floors);
+//		this.controller = new LCSController(this.elevators, this.floors);
+		this.controller = new NeuralNetwork(5,10,1);
 	}
 
 	public List<Elevator> getElevators() {
