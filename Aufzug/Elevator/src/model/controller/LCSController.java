@@ -4,12 +4,9 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.sun.javafx.scene.traversal.Direction;
-
 import model.Elevator;
 import model.Elevator.Directions;
 import model.Floor;
-import model.statistics.Statistic;
 
 /**
  * A LCS Controller
@@ -79,7 +76,7 @@ public class LCSController implements ControllerInterface {
 		// Try to use: Statistic.getInstance().getAverageWaitingTime();
 
 
-		// Belegte fahrst�hle in die gleiche richtung weiter, so lange noch
+		// Belegte fahrst���hle in die gleiche richtung weiter, so lange noch
 		// passagiere in diese richtung wollen
 		// for (Elevator e : this.elevators) {
 		// if (!e.isFree()) {
@@ -90,7 +87,7 @@ public class LCSController implements ControllerInterface {
 		// }
 		// }
 
-		// wartende Passagiere werden vom n�chsten Fahrstuhl bedient
+		// wartende Passagiere werden vom n���chsten Fahrstuhl bedient
 		// for (Floor floor : this.floors) {
 		// if (floor.getWaitingPassengersCount() != 0) {
 		// Elevator e = closestFreeElevator(floor.getId());
@@ -141,194 +138,194 @@ public class LCSController implements ControllerInterface {
 		Elevator e4 = elevators.get(3);
 		
 		switch (action) {
-		case 0:
-			break;
-		case 1:
-			e1.setDirection(Directions.UP);
-			break;
-		case 2:
-			e2.setDirection(Directions.UP);
-			break;
-		case 3:
-			e1.setDirection(Directions.UP);
-			e2.setDirection(Directions.UP);
-			break;
-		case 4:
-			e3.setDirection(Directions.UP);
-			break;
-		case 5:
-			e1.setDirection(Directions.UP);
-			e3.setDirection(Directions.UP);
-			break;
-		case 6:
-			e2.setDirection(Directions.UP);
-			e3.setDirection(Directions.UP);
-			break;
-		case 7:
-			e1.setDirection(Directions.UP);
-			e2.setDirection(Directions.UP);
-			e3.setDirection(Directions.UP);
-			break;
-		case 8:
-			e4.setDirection(Directions.UP);
-			break;
-		case 9:
-			e1.setDirection(Directions.UP);
-			e4.setDirection(Directions.UP);
-			break;
-		case 10:
-			e2.setDirection(Directions.UP);
-			e4.setDirection(Directions.UP);
-			break;
-		case 11:
-			e1.setDirection(Directions.UP);
-			e2.setDirection(Directions.UP);
-			e4.setDirection(Directions.UP);
-			break;
-		case 12:
-			e3.setDirection(Directions.UP);
-			e4.setDirection(Directions.UP);
-			break;
-		case 13:
-			e1.setDirection(Directions.UP);
-			e3.setDirection(Directions.UP);
-			e4.setDirection(Directions.UP);
-			break;
-		case 14:
-			e2.setDirection(Directions.UP);
-			e3.setDirection(Directions.UP);
-			e4.setDirection(Directions.UP);
-			break;
-		case 15:
-			e1.setDirection(Directions.UP);
-			e2.setDirection(Directions.UP);
-			e3.setDirection(Directions.UP);
-			e4.setDirection(Directions.UP);
-			break;
-		case 17:
-			e1.setDirection(Directions.DOWN);
-			break;
-		case 18:
-			e2.setDirection(Directions.DOWN);
-			break;
-		case 19:
-			e1.setDirection(Directions.DOWN);
-			e2.setDirection(Directions.DOWN);
-			break;
-		case 20:
-			e3.setDirection(Directions.DOWN);
-			break;
-		case 21:
-			e1.setDirection(Directions.DOWN);
-			e3.setDirection(Directions.DOWN);
-			break;
-		case 22:
-			e2.setDirection(Directions.DOWN);
-			e3.setDirection(Directions.DOWN);
-			break;
-		case 23:
-			e1.setDirection(Directions.DOWN);
-			e2.setDirection(Directions.DOWN);
-			e3.setDirection(Directions.DOWN);
-			break;
-		case 24:
-			e4.setDirection(Directions.DOWN);
-			break;
-		case 25:
-			e1.setDirection(Directions.DOWN);
-			e4.setDirection(Directions.DOWN);
-			break;
-		case 26:
-			e2.setDirection(Directions.DOWN);
-			e4.setDirection(Directions.DOWN);
-			break;
-		case 27:
-			e1.setDirection(Directions.DOWN);
-			e2.setDirection(Directions.DOWN);
-			e4.setDirection(Directions.DOWN);
-			break;
-		case 28:
-			e3.setDirection(Directions.DOWN);
-			e4.setDirection(Directions.DOWN);
-			break;
-		case 29:
-			e1.setDirection(Directions.DOWN);
-			e3.setDirection(Directions.DOWN);
-			e4.setDirection(Directions.DOWN);
-			break;
-		case 30:
-			e2.setDirection(Directions.DOWN);
-			e3.setDirection(Directions.DOWN);
-			e4.setDirection(Directions.DOWN);
-			break;
-		case 16:
-			e1.setDirection(Directions.DOWN);
-			e2.setDirection(Directions.DOWN);
-			e3.setDirection(Directions.DOWN);
-			e4.setDirection(Directions.DOWN);
-			break;
-		case 31:
-			e1.setDirection(Directions.NONE);
-			break;
-		case 32:
-			e2.setDirection(Directions.NONE);
-			break;
-		case 33:
-			e1.setDirection(Directions.NONE);
-			e2.setDirection(Directions.NONE);
-			break;
-		case 34:
-			e3.setDirection(Directions.NONE);
-			break;
-		case 35:
-			e1.setDirection(Directions.NONE);
-			e3.setDirection(Directions.NONE);
-			break;
-		case 36:
-			e2.setDirection(Directions.NONE);
-			e3.setDirection(Directions.NONE);
-			break;
-		case 37:
-			e1.setDirection(Directions.NONE);
-			e2.setDirection(Directions.NONE);
-			e3.setDirection(Directions.NONE);
-			break;
-		case 38:
-			e4.setDirection(Directions.NONE);
-			break;
-		case 39:
-			e1.setDirection(Directions.NONE);
-			e4.setDirection(Directions.NONE);
-			break;
-		case 40:
-			e2.setDirection(Directions.NONE);
-			e4.setDirection(Directions.NONE);
-			break;
-		case 41:
-			e1.setDirection(Directions.NONE);
-			e2.setDirection(Directions.NONE);
-			e4.setDirection(Directions.NONE);
-			break;
-		case 42:
-			e3.setDirection(Directions.NONE);
-			e4.setDirection(Directions.NONE);
-			break;
-		case 43:
-			e1.setDirection(Directions.NONE);
-			e3.setDirection(Directions.NONE);
-			e4.setDirection(Directions.NONE);
-			break;
-		case 44:
-			e2.setDirection(Directions.NONE);
-			e3.setDirection(Directions.NONE);
-			e4.setDirection(Directions.NONE);
-			break;
-		case 45:
-			e1.setDirection(Directions.NONE);
-			e2.setDirection(Directions.NONE);
-			e3.setDirection(Directions.NONE);
-			e4.setDirection(Directions.NONE);
-			break;
+			case 0:
+				break;
+			case 1:
+				e1.setDirection(Directions.UP);
+				break;
+			case 2:
+				e2.setDirection(Directions.UP);
+				break;
+			case 3:
+				e1.setDirection(Directions.UP);
+				e2.setDirection(Directions.UP);
+				break;
+			case 4:
+				e3.setDirection(Directions.UP);
+				break;
+			case 5:
+				e1.setDirection(Directions.UP);
+				e3.setDirection(Directions.UP);
+				break;
+			case 6:
+				e2.setDirection(Directions.UP);
+				e3.setDirection(Directions.UP);
+				break;
+			case 7:
+				e1.setDirection(Directions.UP);
+				e2.setDirection(Directions.UP);
+				e3.setDirection(Directions.UP);
+				break;
+			case 8:
+				e4.setDirection(Directions.UP);
+				break;
+			case 9:
+				e1.setDirection(Directions.UP);
+				e4.setDirection(Directions.UP);
+				break;
+			case 10:
+				e2.setDirection(Directions.UP);
+				e4.setDirection(Directions.UP);
+				break;
+			case 11:
+				e1.setDirection(Directions.UP);
+				e2.setDirection(Directions.UP);
+				e4.setDirection(Directions.UP);
+				break;
+			case 12:
+				e3.setDirection(Directions.UP);
+				e4.setDirection(Directions.UP);
+				break;
+			case 13:
+				e1.setDirection(Directions.UP);
+				e3.setDirection(Directions.UP);
+				e4.setDirection(Directions.UP);
+				break;
+			case 14:
+				e2.setDirection(Directions.UP);
+				e3.setDirection(Directions.UP);
+				e4.setDirection(Directions.UP);
+				break;
+			case 15:
+				e1.setDirection(Directions.UP);
+				e2.setDirection(Directions.UP);
+				e3.setDirection(Directions.UP);
+				e4.setDirection(Directions.UP);
+				break;
+			case 17:
+				e1.setDirection(Directions.DOWN);
+				break;
+			case 18:
+				e2.setDirection(Directions.DOWN);
+				break;
+			case 19:
+				e1.setDirection(Directions.DOWN);
+				e2.setDirection(Directions.DOWN);
+				break;
+			case 20:
+				e3.setDirection(Directions.DOWN);
+				break;
+			case 21:
+				e1.setDirection(Directions.DOWN);
+				e3.setDirection(Directions.DOWN);
+				break;
+			case 22:
+				e2.setDirection(Directions.DOWN);
+				e3.setDirection(Directions.DOWN);
+				break;
+			case 23:
+				e1.setDirection(Directions.DOWN);
+				e2.setDirection(Directions.DOWN);
+				e3.setDirection(Directions.DOWN);
+				break;
+			case 24:
+				e4.setDirection(Directions.DOWN);
+				break;
+			case 25:
+				e1.setDirection(Directions.DOWN);
+				e4.setDirection(Directions.DOWN);
+				break;
+			case 26:
+				e2.setDirection(Directions.DOWN);
+				e4.setDirection(Directions.DOWN);
+				break;
+			case 27:
+				e1.setDirection(Directions.DOWN);
+				e2.setDirection(Directions.DOWN);
+				e4.setDirection(Directions.DOWN);
+				break;
+			case 28:
+				e3.setDirection(Directions.DOWN);
+				e4.setDirection(Directions.DOWN);
+				break;
+			case 29:
+				e1.setDirection(Directions.DOWN);
+				e3.setDirection(Directions.DOWN);
+				e4.setDirection(Directions.DOWN);
+				break;
+			case 30:
+				e2.setDirection(Directions.DOWN);
+				e3.setDirection(Directions.DOWN);
+				e4.setDirection(Directions.DOWN);
+				break;
+			case 16:
+				e1.setDirection(Directions.DOWN);
+				e2.setDirection(Directions.DOWN);
+				e3.setDirection(Directions.DOWN);
+				e4.setDirection(Directions.DOWN);
+				break;
+			case 31:
+				e1.setDirection(Directions.NONE);
+				break;
+			case 32:
+				e2.setDirection(Directions.NONE);
+				break;
+			case 33:
+				e1.setDirection(Directions.NONE);
+				e2.setDirection(Directions.NONE);
+				break;
+			case 34:
+				e3.setDirection(Directions.NONE);
+				break;
+			case 35:
+				e1.setDirection(Directions.NONE);
+				e3.setDirection(Directions.NONE);
+				break;
+			case 36:
+				e2.setDirection(Directions.NONE);
+				e3.setDirection(Directions.NONE);
+				break;
+			case 37:
+				e1.setDirection(Directions.NONE);
+				e2.setDirection(Directions.NONE);
+				e3.setDirection(Directions.NONE);
+				break;
+			case 38:
+				e4.setDirection(Directions.NONE);
+				break;
+			case 39:
+				e1.setDirection(Directions.NONE);
+				e4.setDirection(Directions.NONE);
+				break;
+			case 40:
+				e2.setDirection(Directions.NONE);
+				e4.setDirection(Directions.NONE);
+				break;
+			case 41:
+				e1.setDirection(Directions.NONE);
+				e2.setDirection(Directions.NONE);
+				e4.setDirection(Directions.NONE);
+				break;
+			case 42:
+				e3.setDirection(Directions.NONE);
+				e4.setDirection(Directions.NONE);
+				break;
+			case 43:
+				e1.setDirection(Directions.NONE);
+				e3.setDirection(Directions.NONE);
+				e4.setDirection(Directions.NONE);
+				break;
+			case 44:
+				e2.setDirection(Directions.NONE);
+				e3.setDirection(Directions.NONE);
+				e4.setDirection(Directions.NONE);
+				break;
+			case 45:
+				e1.setDirection(Directions.NONE);
+				e2.setDirection(Directions.NONE);
+				e3.setDirection(Directions.NONE);
+				e4.setDirection(Directions.NONE);
+				break;
 		}
 	}
 
