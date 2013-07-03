@@ -150,6 +150,7 @@ public class Elevator {
 	}
 
 	public void setDirection(Directions d) {
+		System.out.println("Setting direction for elevator "+this.getId()+" to "+d.ordinal());
 		this.direction = d;
 	}
 

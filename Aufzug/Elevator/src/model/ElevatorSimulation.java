@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.Vector;
 
 import model.controller.ControllerInterface;
-//import model.controller.LCSController;
-import model.controller.SimpleController;
+import model.controller.LCSController;
+//import model.controller.SimpleController;
 import model.statistics.Statistic;
 
 /**
@@ -33,8 +33,8 @@ public class ElevatorSimulation {
 			this.elevators.add(new Elevator(floors, i));
 		}
 
-		this.controller = new SimpleController(this.elevators, this.floors);
-		//this.controller = new LCSController(this.elevators, this.floors);
+		//this.controller = new SimpleController(this.elevators, this.floors);
+		this.controller = new LCSController(this.elevators, this.floors);
 	}
 
 	public List<Elevator> getElevators() {

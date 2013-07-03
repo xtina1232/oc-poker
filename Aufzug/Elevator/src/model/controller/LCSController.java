@@ -53,12 +53,12 @@ public class LCSController implements ControllerInterface {
 		// Bewertung
 		boolean doEvaluate = false;
 		for(int i=0; i<4; i++) {
-			if(passengerCounts[i] != elevators.get(i).getPassengerCount()) {
+			if(passengerCounts[i] != elevators.get(i).getPassengerCount() && history.size() > 0) {
 				doEvaluate = true;
 				passengerCounts[i] = elevators.get(i).getPassengerCount();
 			}
 		}
-		if(doEvaluate) {
+		if (doEvaluate) {
 			List<Classifier> lastActionSet = history.get(0);
 			int wholeFitness = calculateFitness(lastActionSet);
 			evaluateActionSet(lastActionSet, wholeFitness);
@@ -126,11 +126,13 @@ public class LCSController implements ControllerInterface {
 		for (Elevator e : elevators) {
 			state.add(e.getCurrentFloor());
 			state.add(e.getDirection().ordinal());
+			state.add(e.isEmpty() ? 1 : 0);
 		}
 		return state;
 	}
 
-	private void performAction(int action) {
+	private void performAction (int action) {
+		System.out.println("Performing action: "+action);
 		Elevator e1 = elevators.get(0);
 		Elevator e2 = elevators.get(1);
 		Elevator e3 = elevators.get(2);
