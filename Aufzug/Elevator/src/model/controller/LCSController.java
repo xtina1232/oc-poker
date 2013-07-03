@@ -63,16 +63,18 @@ public class LCSController implements ControllerInterface {
 		}
 		
 		if(doEvaluate) {
-			List<Classifier> lastActionSet = history.get(0);
-			int wholeFitness = calculateFitness(lastActionSet);
-			evaluateActionSet(lastActionSet, wholeFitness);
-			
-			int currentFitness = Math.round(wholeFitness * GAMMA);
-			for(int i=0; i<history.size(); i++) {
-				if (currentFitness <= 1)
-					break;
-				evaluateActionSet(history.get(i), currentFitness);
-				currentFitness = Math.round(currentFitness * GAMMA);
+			if(history.size() > 0) {
+				List<Classifier> lastActionSet = history.get(0);
+				int wholeFitness = calculateFitness(lastActionSet);
+				evaluateActionSet(lastActionSet, wholeFitness);
+				
+				int currentFitness = Math.round(wholeFitness * GAMMA);
+				for(int i=0; i<history.size(); i++) {
+					if (currentFitness <= 1)
+						break;
+					evaluateActionSet(history.get(i), currentFitness);
+					currentFitness = Math.round(currentFitness * GAMMA);
+				}
 			}
 		}
 		
