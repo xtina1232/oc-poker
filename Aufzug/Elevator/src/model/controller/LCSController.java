@@ -7,6 +7,7 @@ import java.util.List;
 
 import model.Elevator;
 import model.Elevator.Directions;
+import model.statistics.Statistic;
 import model.Floor;
 
 /**
@@ -23,6 +24,7 @@ public class LCSController implements ControllerInterface {
 	private int[] passengerCounts;
 	private final float BETA = 0.3f;
 	private final float GAMMA = 0.71f;
+	private double previousWaitingTime = 0.0;
 	
 	public LCSController(List<Elevator> elevators, List<Floor> floors) {
 		this.elevators = elevators;
@@ -60,12 +62,14 @@ public class LCSController implements ControllerInterface {
 			}
 		}
 		
-		if(doEvaluate) {
-			if(history.size() > 0) {
-				List<Classifier> lastActionSet = history.get(0);
-				int wholeFitness = calculateFitness(lastActionSet);
+		if(doEvaluate && history.size() > 0) {
+			List<Classifier> lastActionSet = history.get(0);
+			int wholeFitness = calculateFitness(lastActionSet);
+			double currentWaitingTime = Statistic.getInstance().getAverageWaitingTime();
+			
+			if (currentWaitingTime < previousWaitingTime) {
 				evaluateActionSet(lastActionSet, wholeFitness);
-				
+
 				int currentFitness = Math.round(wholeFitness * GAMMA);
 				for(int i=0; i<history.size(); i++) {
 					if (currentFitness <= 1)
@@ -73,6 +77,7 @@ public class LCSController implements ControllerInterface {
 					evaluateActionSet(history.get(i), currentFitness);
 					currentFitness = Math.round(currentFitness * GAMMA);
 				}
+				previousWaitingTime = currentWaitingTime;
 			}
 		}
 		
@@ -334,7 +339,7 @@ public class LCSController implements ControllerInterface {
 		}
 	}
 
-	private Elevator closestFreeElevator(int floor) {
+	/*private Elevator closestFreeElevator(int floor) {
 		int shortestDistance = 100;
 		Elevator closestElevator = null;
 
@@ -347,5 +352,5 @@ public class LCSController implements ControllerInterface {
 		}
 
 		return closestElevator;
-	}
+	}*/
 }
