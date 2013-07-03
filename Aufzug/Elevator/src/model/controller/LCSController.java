@@ -22,7 +22,7 @@ public class LCSController implements ControllerInterface {
 	protected List<Floor> floors;
 	protected ClassifierContainer classifierContainer;
 	private LinkedList<List<Classifier>> history;
-	private int[] passangerCounts;
+	private int[] passengerCounts;
 	private final float BETA = 0.3f;
 	private final float GAMMA = 0.71f;
 	
@@ -31,7 +31,7 @@ public class LCSController implements ControllerInterface {
 		this.floors = floors;
 		this.classifierContainer = ClassifierContainer.getInstance();
 		this.history = new LinkedList<List<Classifier>>();
-		this.passangerCounts = new int[]{0, 0, 0, 0};
+		this.passengerCounts = new int[]{0, 0, 0, 0};
 	}
 
 	public void step() {
@@ -56,29 +56,25 @@ public class LCSController implements ControllerInterface {
 		// Bewertung
 		boolean doEvaluate = false;
 		for(int i=0; i<4; i++) {
-			if(passangerCounts[i] != elevators.get(i).getPassengerCount()) {
+			if(passengerCounts[i] != elevators.get(i).getPassengerCount()) {
 				doEvaluate = true;
-				passangerCounts[i] = elevators.get(i).getPassengerCount();
+				passengerCounts[i] = elevators.get(i).getPassengerCount();
 			}
 		}
 		if(doEvaluate) {
+			List<Classifier> lastActionSet = history.get(0);
+			int wholeFitness = calculateFitness(lastActionSet);
+			evaluateActionSet(lastActionSet, wholeFitness);
 			
-			int wholeFitness = 0;
-			int nextWholeFitness = 0;
-			List<Classifier> prevActionSet = history.get(0);
-			for(Classifier c : prevActionSet) {
-				int deltaFitness = Math.round(c.getFitness() * BETA);
-				c.setFitness(c.getFitness() - deltaFitness);
-				wholeFitness += deltaFitness;
-			}
-			
+			int currentFitness = Math.round(wholeFitness * GAMMA);
 			for(int i=0; i<history.size(); i++) {
-				for(Classifier c : prevActionSet) {
-					c.setFitness(c.getFitness() + Math.round(wholeFitness * GAMMA));
-				}
+				if (currentFitness <= 1)
+					break;
+				evaluateActionSet(history.get(i), currentFitness);
+				currentFitness = Math.round(currentFitness * GAMMA);
 			}
 		}
-
+		
 		// TODO: Assign Rewards to current and to previous ActionSet
 		// Try to use: Statistic.getInstance().getAverageWaitingTime();
 
@@ -106,6 +102,24 @@ public class LCSController implements ControllerInterface {
 		// }
 		// }
 		// }
+	}
+	
+	private int calculateFitness (List<Classifier> actionSet) {
+		int wholeFitness = 0;
+		for(Classifier c : actionSet) {
+			int deltaFitness = Math.round(c.getFitness() * BETA);
+			c.setFitness(c.getFitness() - deltaFitness);
+			wholeFitness += deltaFitness;
+		}
+		return wholeFitness;
+	}
+	
+	private void evaluateActionSet (List<Classifier> actionSet, int amount) {
+		int len = actionSet.size();
+		int subAmount = amount / len;
+		for(Classifier c : actionSet) {
+			c.setFitness(subAmount);
+		}
 	}
 
 	private List<Integer> getState() {
