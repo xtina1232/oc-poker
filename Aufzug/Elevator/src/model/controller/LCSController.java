@@ -3,12 +3,12 @@ package model.controller;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-
-import com.sun.javafx.scene.traversal.Direction;
+import java.util.Random;
 
 import model.Elevator;
 import model.Elevator.Directions;
 import model.Floor;
+import model.controller.nn.ParameterProvider;
 import model.statistics.Statistic;
 
 /**
@@ -25,6 +25,8 @@ public class LCSController implements ControllerInterface {
 	private int[] passengerCounts;
 	private final float BETA = 0.3f;
 	private final float GAMMA = 0.71f;
+	private float lastAverageTripTime = 0;
+	
 	
 	public LCSController(List<Elevator> elevators, List<Floor> floors) {
 		this.elevators = elevators;
@@ -34,13 +36,27 @@ public class LCSController implements ControllerInterface {
 		this.passengerCounts = new int[]{0, 0, 0, 0};
 	}
 
+	private long counter = 0;
+	
 	public void step() {
 
+		if(ParameterProvider.PRINT) {
+			if(counter % 1000 == 0) {
+				classifierContainer.debugClassifiers();
+			}
+		}
+		
+		// Umgebungszustand einlesen
 		List<Integer> state = getState();
 		
 		// Get the best fitting actions
 		List<Classifier> actionSet = classifierContainer.getActionSet(state);
 
+		if(ParameterProvider.DEBUG) {
+		
+			System.out.println("ActionSet in this Step contains: " + actionSet.size() + " Classifiers");
+		
+		}
 		
 		// Execute the Actions
 		if (actionSet.size() > 0) {
@@ -48,7 +64,9 @@ public class LCSController implements ControllerInterface {
 			if (history.size() >= 10) {
 				history.removeLast();
 			}
+			lastAverageTripTime = Statistic.getInstance().getAverageWaitingAndTravelingTime();
 			performAction(actionSet.get(0).getAction());
+			
 		}
 		
 		
@@ -63,50 +81,60 @@ public class LCSController implements ControllerInterface {
 		}
 		
 		if(doEvaluate) {
+			
+			// Vereinfachte Variante der Bewertung
 			if(history.size() > 0) {
-				List<Classifier> lastActionSet = history.get(0);
-				int wholeFitness = calculateFitness(lastActionSet);
-				evaluateActionSet(lastActionSet, wholeFitness);
-				
-				int currentFitness = Math.round(wholeFitness * GAMMA);
-				for(int i=0; i<history.size(); i++) {
-					if (currentFitness <= 1)
-						break;
-					evaluateActionSet(history.get(i), currentFitness);
-					currentFitness = Math.round(currentFitness * GAMMA);
+				List<Classifier> currentActionSet = history.getFirst();
+				float currentAverageTripTime = Statistic.getInstance().getAverageWaitingAndTravelingTime();
+				if(currentAverageTripTime < lastAverageTripTime) {
+					if(ParameterProvider.PRINT) {
+						System.out.println("Belohne Action:" + currentActionSet.get(0).getAction());
+					}
+					
+					for(Classifier c : currentActionSet) {
+						c.setFitness(c.getFitness() + 10); 
+					}
+				} else {
+					if(ParameterProvider.PRINT) {
+						System.out.println("Bestrafe Action:" + currentActionSet.get(0).getAction());
+					}
+					
+					for(Classifier c : currentActionSet) {
+						c.setFitness(Math.max(c.getFitness() - 2,0)); 
+					}
 				}
 			}
+			
+			
+//			Alte Bewertung die noch nicht funktioniert, aber abbilded was eigentlich zu tun ist
+//			=> Vorherige ActionSets immer weniger belohnen oder bestrafen
+			
+//			if(history.size() > 0) {
+//				List<Classifier> lastActionSet = history.get(0);
+//				int wholeFitness = calculateFitness(lastActionSet);
+//				evaluateActionSet(lastActionSet, wholeFitness);
+//				
+//				int currentFitness = Math.round(wholeFitness * GAMMA);
+//				for(int i=0; i<history.size(); i++) {
+//					if (currentFitness <= 1)
+//						break;
+//					evaluateActionSet(history.get(i), currentFitness);
+//					currentFitness = Math.round(currentFitness * GAMMA);
+//				}
+//			}
 		}
 		
-		for (Floor floor : this.floors) {
-			if (floor.getWaitingPassengersCount() != 0) {
-				Elevator e = closestFreeElevator(floor.getId());
-				if (e != null) {
-					if (e.getCurrentFloor() - floor.getId() > 0)
-						e.setDirection(Directions.DOWN);
-					else
-						e.setDirection(Directions.UP);
-				}
-			}
+		
+		// Mutate zu 50 % Wahrscheinlichkeit
+		
+		Random rand = new Random();
+		if(rand.nextFloat() < 0.5) {
+			this.classifierContainer.mutate();	
 		}
 		
-		
-
-
-		// Belegte fahrstï¿½hle in die gleiche richtung weiter, so lange noch
-		// passagiere in diese richtung wollen
-		// for (Elevator e : this.elevators) {
-		// if (!e.isFree()) {
-		// if (!e.rightDirection()) {
-		// e.changeDirection();
-		//
-		// }
-		// }
-		// }
-
-		// wartende Passagiere werden vom nï¿½chsten Fahrstuhl bedient
-		// 
+		counter++;
 	}
+	
 	
 	private int calculateFitness (List<Classifier> actionSet) {
 		int wholeFitness = 0;
@@ -138,7 +166,17 @@ public class LCSController implements ControllerInterface {
 		return state;
 	}
 
+	/**
+	 * Führt eine Aktion aus
+	 */
 	private void performAction(int action) {
+		
+		if(ParameterProvider.PRINT) {
+		
+			System.out.println("Performing Action:" + action);
+		
+		}
+		
 		Elevator e1 = elevators.get(0);
 		Elevator e2 = elevators.get(1);
 		Elevator e3 = elevators.get(2);
