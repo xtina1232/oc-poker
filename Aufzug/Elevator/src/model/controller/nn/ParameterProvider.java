@@ -15,6 +15,6 @@ public class ParameterProvider {
 	public static int maximalEpoche = 300;
 	
 	// LCS
-	public static int CLASSIFIER_COUNT = 10;
+	public static int CLASSIFIER_COUNT = 1000;
 }
 
