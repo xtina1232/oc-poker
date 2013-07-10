@@ -15,7 +15,7 @@ public class RastriginFitnessFunction extends FitnessFunction implements Objecti
 
 	@Override
 	public double distance(double[] position) {
-		return evaluate(position);
+		return -evaluate(position);
 	}
 
 	@Override

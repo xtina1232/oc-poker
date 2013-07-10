@@ -5,7 +5,7 @@ import net.sourceforge.jswarm_pso.Swarm;
 
 public class PsoOptimizer {
 	
-	public static void Optimize(FitnessFunction function, int iter) {
+	public static double[] Optimize(FitnessFunction function, int iter) {
 		Swarm swarm = new Swarm(Swarm.DEFAULT_NUMBER_OF_PARTICLES,
 				new MyParticle(), function);
 		// Set position (and velocity) constraints.
@@ -18,5 +18,6 @@ public class PsoOptimizer {
 		// Print en results
 		System.out.println("Optimized " + function.toString());
 		System.out.println(swarm.toStringStats());
+		return swarm.getBestParticle().getBestPosition();
 	}
 }

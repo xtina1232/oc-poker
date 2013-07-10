@@ -5,13 +5,12 @@ import net.sourceforge.jannealer.ObjectiveFunction;
 
 public class SaOptimizer {
 
-	public static void Optimize(ObjectiveFunction function, int iterations) {
+	public static double[] Optimize(ObjectiveFunction function, int iterations) {
 		
 		AnnealingScheme scheme = new AnnealingScheme();
 		scheme.setFunction(function);
 		scheme.setIterations(iterations);
 		scheme.anneal();
-
 		double[] solution;
 		solution = scheme.getSolution();
 
@@ -20,5 +19,7 @@ public class SaOptimizer {
 		System.out.println("Best position: 	[" + solution[0] + ", " + solution[1] + "]");
 		System.out.println("Number of evaluations: " + iterations);
 		System.out.println();
+		
+		return solution;
 	}
 }

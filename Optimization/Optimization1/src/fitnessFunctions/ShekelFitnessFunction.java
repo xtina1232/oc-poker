@@ -15,7 +15,7 @@ public class ShekelFitnessFunction extends FitnessFunction implements ObjectiveF
 	
 	@Override
 	public double distance(double[] position) {
-		return evaluate(position);
+		return -evaluate(position);
 	}
 
 	@Override
