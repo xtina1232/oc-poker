@@ -18,7 +18,7 @@ public class SchwefelFitnessFunction extends FitnessFunction implements Objectiv
 	// für SA
 	@Override
 	public double distance(double[] position) {
-		return -evaluate(position);
+		return evaluate(position);
 	}
 
 	@Override

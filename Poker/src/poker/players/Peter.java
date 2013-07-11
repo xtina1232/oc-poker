@@ -6,7 +6,6 @@ import poker.model.Action.PlayerAction;
 import poker.model.Card;
 import poker.model.GameState;
 import poker.model.logic.showdown.HandEvaluator;
-import poker.model.logic.showdown.HandQuality;
 import poker.model.logic.showdown.HandStrength;
 
 /**
