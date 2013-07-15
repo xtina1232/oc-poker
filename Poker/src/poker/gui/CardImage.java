@@ -31,7 +31,7 @@ public class CardImage {
 	public ImageIcon getCardImage(String cardString) throws FileNotFoundException {
 		ImageIcon result = null;
 		if(imageMap.containsKey(cardString)) {
-			// return already exisiting image
+			// return already existing image
 			result = imageMap.get(cardString);
 		} else {
 			// store image and then return it

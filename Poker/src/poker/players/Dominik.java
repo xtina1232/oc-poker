@@ -1,6 +1,7 @@
 package poker.players;
 
-import poker.model.AbstractPlayer;
+import java.util.ArrayList;
+
 import poker.model.Action;
 import poker.model.Action.PlayerAction;
 import poker.model.Card;
@@ -11,11 +12,7 @@ import poker.model.GameState;
  * 
  * @author Dominik Schöler
  */
-public class ChuckNorris extends AbstractPlayer {
-
-	protected enum Round {
-		PREFLOP, FLOP, RIVER, TURN, UNKNOWN
-	};
+public class Dominik extends ChuckNorris {
 	
 	protected GameState currentGameState = null;
 	protected int currentPosition;
@@ -39,7 +36,7 @@ public class ChuckNorris extends AbstractPlayer {
 		case TURN:
 			return turnAction();
 		default:
-			return defaultAction();
+			return preflopAction();
 		}
 	}
 
@@ -98,45 +95,29 @@ public class ChuckNorris extends AbstractPlayer {
 			return tryAction(PlayerAction.RAISE);
 		}
 	}
-	protected Action defaultAction() {
-		return preflopAction();
-	}
 
 	protected Action flopAction() {
-
 		HandEvaluator evaluator = new HandEvaluator(currentPosition, currentHand, currentGameState.getBoard());
 		HandStrength strength = evaluator.getResult().getStrength();
 
 		switch (strength) {
 		case HighCard:
-			return tryAction(PlayerAction.FOLD);
-		default:
 			return tryAction(PlayerAction.CALL);
-			// case OnePair:
-			// return tryAction(PlayerAction.CALL);
-			// case TwoPair:
-			// return tryAction(PlayerAction.CALL);
-			// case Trips:
-			// return tryAction(PlayerAction.CALL);
-			// case Straight:
-			// return tryAction(PlayerAction.CALL);
-			// case Flush:
-			// return tryAction(PlayerAction.CALL);
-			// case FullHouse:
-			// return tryAction(PlayerAction.CALL);
-			// case FourOfAKind:
-			// return tryAction(PlayerAction.CALL);
-			// case StraightFlush:
-			// return tryAction(PlayerAction.CALL);
-			// default:
-			// return tryAction(PlayerAction.CALL);
+		case OnePair:
+			return tryAction(PlayerAction.CALL);
+		case TwoPair:
+			return tryAction(PlayerAction.CALL);
+		case Trips:
+			return tryAction(PlayerAction.CALL);
+		default: // für alle anderen
+			return tryAction(PlayerAction.RAISE);
 		}
 	}
 
 	protected Action preflopAction() {
 		double quality = HandQuality.getHandQuality(currentHand[0], currentHand[1], currentGameState.getRemainingPlayers());
 
-		if (quality > 50) {
+		if (quality > 70) {
 			return tryAction(PlayerAction.RAISE);
 		} else {
 			return tryAction(PlayerAction.CALL);
@@ -160,7 +141,7 @@ public class ChuckNorris extends AbstractPlayer {
 			int ownCoins = currentGameState.getStack(currentPosition);
 			int minToRaise = currentGameState.getMinimumRaise() + currentCallSize;
 			
-			if(ownCoins >= minToRaise) {
+			if(ownCoins >= minToRaise && someoneRaised()) {
 				return new Action(PlayerAction.RAISE, minToRaise);
 			} else if(ownCoins >= currentCallSize) {
 				return new Action(PlayerAction.CALL);
@@ -172,6 +153,17 @@ public class ChuckNorris extends AbstractPlayer {
 			return new Action(PlayerAction.FOLD);
 
 		}
+	}
+	
+	private boolean someoneRaised() {
+		ArrayList<Action> otherPlayersActions = currentGameState.getLastActions();
+		
+		for(Action action : otherPlayersActions) {
+			if(action.getAction() == PlayerAction.RAISE) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }
