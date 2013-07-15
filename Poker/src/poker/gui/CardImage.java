@@ -11,7 +11,7 @@ import javax.swing.ImageIcon;
 
 public class CardImage {
 	
-	private final static String IMAGEPATH = "pictures\\";
+	private final static File IMAGEDIR = new File("pictures");
 	
 	private HashMap<String, ImageIcon> imageMap = new HashMap<String, ImageIcon>();
 	
@@ -31,18 +31,19 @@ public class CardImage {
 	public ImageIcon getCardImage(String cardString) throws FileNotFoundException {
 		ImageIcon result = null;
 		if(imageMap.containsKey(cardString)) {
-			// return allready exisiting image
+			// return already exisiting image
 			result = imageMap.get(cardString);
 		} else {
-			// store image and than return it
+			// store image and then return it
+			File imageFile = new File(IMAGEDIR, String.format("%s.jpg",cardString));
+
 			try {
-				String path = String.format("%s%s.jpg",IMAGEPATH,cardString);
-				BufferedImage image = ImageIO.read(new File(path));
+				BufferedImage image = ImageIO.read(imageFile);
 				ImageIcon icon = new ImageIcon(image);
 				imageMap.put(cardString, icon);
 				result = icon;
 			} catch (IOException e) {
-				throw new FileNotFoundException(String.format("Das Bild %s konnte nicht geöffnet werden.",cardString));
+				throw new FileNotFoundException(String.format("Das Bild %s konnte nicht geÃ¶ffnet werden.",imageFile.getPath()));
 			}
 		}
 		
