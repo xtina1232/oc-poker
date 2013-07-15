@@ -1,90 +1,172 @@
 package poker.players;
 
-import poker.model.AbstractPlayer;
+import java.util.ArrayList;
+import java.util.Random;
+
 import poker.model.Action;
 import poker.model.Action.PlayerAction;
 import poker.model.Card;
 import poker.model.GameState;
-import poker.model.logic.showdown.HandEvaluator;
-import poker.model.logic.showdown.HandStrength;
 
 /**
- * This is the Player of Peter Ittner
+ * This is Peter's approach to an intelligent player.
  * 
- * @author Ittner
+ * @author Peter Ittner
  */
-public class Peter extends AbstractPlayer {
+public class Peter extends ChuckNorris {
+	
+	protected GameState currentGameState = null;
+	protected int currentPosition;
+	protected Card[] currentHand;
+	protected int currentCallSize;
 
 	@Override
-	public void tableFinished(int position, Integer[] ranking) {
-		super.tableFinished(position, ranking);
-		// TODO for learning: protocol rank
+	public Action getAction(int position, GameState gs, Card[] hand, int callSize) {
+		currentPosition = position;
+		currentGameState = gs;
+		currentHand = hand;
+		currentCallSize = callSize;
+
+		switch (getRound()) {
+		case PREFLOP:
+			return preflopAction();
+		case FLOP:
+			return flopAction();
+		case RIVER:
+			return riverAction();
+		case TURN:
+			return turnAction();
+		default:
+			return preflopAction();
+		}
 	}
 
-	@Override
-	public Action getAction(int position, GameState gs, Card[] hand,
-			int callSize) {
-		
-		// Initial Action
-		Action action = new Action(PlayerAction.CALL);
-		
-		Card[] board = gs.getBoard();
-		
-		Card[] filledBoard = fillBoardWithTrashToEvaluate(board);
-		
-		boolean tryCall = true;
-		boolean tryRaise = false;
+	protected Round getRound() {
+		int cardCount = 0;
+		Card[] board = currentGameState.getBoard();
 
-		HandEvaluator eval = new HandEvaluator(position, hand, filledBoard);
-		HandStrength strength = eval.getResult().getStrength();
+		for (cardCount = 0; cardCount < board.length; cardCount++) {
+			if (board[cardCount] == null)
+				break;
+		}
 
-		double quality = HandQuality.getHandQuality(hand[0], hand[1],
-				gs.getRemainingPlayers());
-		int ownCoins = gs.getStack(position);
-		int minToRaise = gs.getMinimumRaise() + callSize;
+		switch (cardCount) {
+		case 0:
+			return Round.PREFLOP;
+		case 3:
+			return Round.FLOP;
+		case 4:
+			return Round.RIVER;
+		case 5:
+			return Round.TURN;
+		default:
+			return Round.UNKNOWN;
+		}
+	}
 
-		boolean canRaise = quality > 40 && ownCoins >= minToRaise;
-		boolean canCall = quality > 40;
+	protected Action turnAction() {
+		HandEvaluator evaluator = new HandEvaluator(currentPosition, currentHand, currentGameState.getBoard());
+		HandStrength strength = evaluator.getResult().getStrength();
 
 		switch (strength) {
-		case Flush:
-		case FourOfAKind:
-		case FullHouse:
-		case Straight:
-		case StraightFlush:
-		case Trips:
-			tryRaise = true;
-		// case TwoPair:
-		// break;
-		// case OnePair:
-		// break;
-		// case HighCard:
-		// break;
+		case HighCard:
+			return tryAction(PlayerAction.FOLD);
+		case OnePair:
+			return tryAction(PlayerAction.CALL);
+		case TwoPair:
+			return tryAction(PlayerAction.CALL);
 		default:
-			tryCall = true;
+			return tryAction(PlayerAction.RAISE);
 		}
-
-		if (tryRaise && canRaise) {
-			action = new Action(PlayerAction.RAISE, minToRaise);
-		} else if (tryCall && canCall) {
-			action = new Action(PlayerAction.CALL);
-		} else {
-			action = new Action(PlayerAction.FOLD);
-		}
-		return action;
-
 	}
 
-	private Card[] fillBoardWithTrashToEvaluate(Card[] board) {
-		// muss auf jeden Fall 5 Karten enthalten
-		Card[] filledBoard = new Card[5];
-		for(int i=0; i<board.length && i<filledBoard.length; i++) {
-			if(board[i] == null) {
-				filledBoard[i] = new Card(0,0);
+	protected Action riverAction() {
+
+		HandEvaluator evaluator = new HandEvaluator(currentPosition, currentHand, currentGameState.getBoard());
+		HandStrength strength = evaluator.getResult().getStrength();
+
+		switch (strength) {
+		case HighCard:
+			return tryAction(PlayerAction.FOLD);
+		case OnePair:
+			return tryAction(PlayerAction.CALL);
+		case TwoPair:
+			return tryAction(PlayerAction.CALL);
+		default:
+			return tryAction(PlayerAction.RAISE);
+		}
+	}
+
+	protected Action flopAction() {
+		HandEvaluator evaluator = new HandEvaluator(currentPosition, currentHand, currentGameState.getBoard());
+		HandStrength strength = evaluator.getResult().getStrength();
+
+		switch (strength) {
+		case HighCard:
+			return tryAction(PlayerAction.CALL);
+		case OnePair:
+			return tryAction(PlayerAction.CALL);
+		case TwoPair:
+			return tryAction(PlayerAction.CALL);
+		case Trips:
+			return tryAction(PlayerAction.CALL);
+		default: // für alle anderen
+			return tryAction(PlayerAction.RAISE);
+		}
+	}
+
+	protected Action preflopAction() {
+		double quality = HandQuality.getHandQuality(currentHand[0], currentHand[1], currentGameState.getRemainingPlayers());
+
+		if (quality > 70) {
+			return tryAction(PlayerAction.RAISE);
+		} else {
+			return tryAction(PlayerAction.CALL);
+		}
+	}
+
+	protected Action tryAction(PlayerAction action) {
+		switch (action) {
+		case FOLD:
+			return new Action(PlayerAction.FOLD);
+		case CALL: {
+			int ownCoins = currentGameState.getStack(currentPosition);
+			
+			if(ownCoins >= currentCallSize) {
+				return new Action(PlayerAction.CALL);
 			} else {
-				filledBoard[i] = board[i];
+				return new Action(PlayerAction.FOLD);
 			}
 		}
-		return filledBoard;
+		case RAISE: {
+			int ownCoins = currentGameState.getStack(currentPosition);
+			int minToRaise = currentGameState.getMinimumRaise() + currentCallSize;
+			
+			if(ownCoins >= minToRaise && someoneRaised()) {
+				Random rand = new Random();
+				int raiseAmount = rand.nextInt(ownCoins-minToRaise)+minToRaise;
+				return new Action(PlayerAction.RAISE, raiseAmount);
+			} else if(ownCoins >= currentCallSize) {
+				return new Action(PlayerAction.CALL);
+			} else {
+				return new Action(PlayerAction.FOLD);
+			}
+		}
+		default:
+			return new Action(PlayerAction.FOLD);
+
+		}
 	}
+	
+	private boolean someoneRaised() {
+		ArrayList<Action> otherPlayersActions = currentGameState.getLastActions();
+		
+		for(Action action : otherPlayersActions) {
+			if(action.getAction() == PlayerAction.RAISE) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 }
