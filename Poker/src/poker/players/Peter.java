@@ -144,7 +144,7 @@ public class Peter extends ChuckNorris {
 			
 			if(ownCoins >= minToRaise && someoneRaised()) {
 				Random rand = new Random();
-				int raiseAmount = rand.nextInt(ownCoins-minToRaise)+minToRaise;
+				int raiseAmount = rand.nextInt(Math.max(1,ownCoins-minToRaise))+minToRaise;
 				return new Action(PlayerAction.RAISE, raiseAmount);
 			} else if(ownCoins >= currentCallSize) {
 				return new Action(PlayerAction.CALL);
